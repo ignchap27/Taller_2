@@ -64,7 +64,7 @@ public class ConsolaHamburguesas {
 
 	private static void cargarArchivos() {
 		try {
-			restaurante = LoaderRestaurante.cargar_archivos("./data/menu.txt", "./data/combos.txt", "./data/ingredientes.txt");
+			restaurante = LoaderRestaurante.cargar_archivos("./data/menu.txt","./data/bebidas", "./data/combos.txt", "./data/ingredientes.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,7 +149,8 @@ public class ConsolaHamburguesas {
 		}	
 		Ingredientes ingrediente;
 		System.out.println("¿Deseas agregar o eliminar algun ingrediente de tu pedido?");
-		int agregar_eliminar = Integer.parseInt(input("\n1. Agregar\n 2. Eliminar"));
+		System.out.println("\n1. Agregar\n2. Eliminar");
+		int agregar_eliminar = Integer.parseInt(input("\nSeleccione una opción"));
 		if(agregar_eliminar == 1) {
 			int opcion_agregar = Integer.parseInt(input("\nPor favor seleccione que opción desea agregar a su pedido")) - 1;
 			List<Ingredientes> lista_ingredientes = restaurante.daringredientes();
@@ -158,7 +159,14 @@ public class ConsolaHamburguesas {
 			System.out.println("\nAdición agregada correctamente!\n");
 		}
 		else if(agregar_eliminar == 2) {
-			int opcion_agregar = Integer.parseInt(input("\nPor favor seleccione que opción desea eliminar de su pedido"));
+			int opcion_agregar = Integer.parseInt(input("\nPor favor seleccione que opción desea eliminar de su pedido")) - 1;
+			List<Ingredientes> lista_ingredientes = restaurante.daringredientes();
+			ingrediente = lista_ingredientes.get(opcion_agregar);
+			String nombre_ingrediente_a_quitar = ingrediente.dar_nombre();
+			Ingredientes ingrediente_a_quitar = new Ingredientes(nombre_ingrediente_a_quitar);
+			pedido_general.agregar_ingrediete(ingrediente_a_quitar);
+			System.out.println("\nIngrediente eliminado correctamente!\n");
+			
 		}
 	}
 
@@ -242,7 +250,7 @@ public class ConsolaHamburguesas {
 	public static void mostrar_opciones_pedido() {
 		System.out.println("1. Agregar un plato");
 		System.out.println("2. Agregar un combo");
-		System.out.println("3. Agregar una adición\n");
+		System.out.println("3. Agregar o eliminar una adición\n");
 	}
 	
 	public static String input(String mensaje)

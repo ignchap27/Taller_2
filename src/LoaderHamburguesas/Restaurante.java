@@ -2,6 +2,7 @@ package LoaderHamburguesas;
 
 import java.util.List;
 
+import Modelo.Bebidas;
 import Modelo.Combos;
 import Modelo.Ingredientes;
 import Modelo.Pedido;
@@ -10,12 +11,14 @@ import Modelo.Platos;
 public class Restaurante {
 
 	List<Platos> platos;
+	List<Bebidas> bebidas;
 	List<Ingredientes> ingredientes;
 	List<Combos> combos;
 	List<Pedido> pedidos;
 	
-	public Restaurante(List<Platos> platos, List<Ingredientes> ingredientes, List<Combos>combos, List<Pedido> pedidos){
+	public Restaurante(List<Platos> platos,List<Bebidas> bebidas, List<Ingredientes> ingredientes, List<Combos>combos, List<Pedido> pedidos){
 		this.platos = platos;
+		this.bebidas = bebidas;
 		this.ingredientes = ingredientes;
 		this.combos = combos;
 		this.pedidos = pedidos;
@@ -23,6 +26,9 @@ public class Restaurante {
 	
 	public List<Platos> darPlatos() {
 		return platos;
+	}
+	public List<Bebidas> darBebidas() {
+		return bebidas;
 	}
 	public List<Combos> darCombos() {
 		return combos;
@@ -48,6 +54,19 @@ public class Restaurante {
 			}
 		}
 		return combo_buscado;
+		}
+	public Bebidas look_for_bebida(List<Bebidas> bebidas_lista, String nombre_bebida) {
+		Bebidas bebida_buscado = null;
+
+		for (int i = bebidas_lista.size() - 1; i >= 0; i--)
+		{
+			Bebidas bebida = bebidas_lista.get(i);
+			if (bebida.dar_nombre().equals(nombre_bebida))
+			{
+				bebida_buscado = bebida;
+			}
+		}
+		return bebida_buscado;
 		}
 	public Platos look_for_plato(List<Platos> platos_lista, String nombre_plato) {
 		Platos plato_buscado = null;

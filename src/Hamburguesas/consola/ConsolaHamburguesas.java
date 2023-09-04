@@ -145,7 +145,7 @@ public class ConsolaHamburguesas {
 		System.out.println("Con un total de " + calorias + " calorias\n");
 		Pedido pedido_igual = restaurante.equals(lista_total, pedido_general);
 		if (pedido_igual != null) {
-			System.out.println("\n¡Hemos encontrado que " + pedido_igual.dar_nombre_cliente() + " ha realizado el mismo pedido!");
+			System.out.println("\n¡Hemos encontrado que " + pedido_igual.dar_nombre_cliente() + " ha realizado el mismo pedido!\n");
 			}
 		lista_total.add(pedido_general);
 			

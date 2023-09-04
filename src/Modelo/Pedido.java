@@ -19,6 +19,9 @@ public class Pedido {
 	public void agregar_plato(Platos plato) {
 		this.pedido.add(plato);
 	}
+	public void agregar_bebida(Bebidas bebida) {
+		this.pedido.add(bebida);
+	}
 	public void agregar_combo(Combos combo) {
 		this.pedido.add(combo);
 	}
@@ -45,5 +48,8 @@ public class Pedido {
 	}
 	public String dar_nombre() {
 		return "";
+	}
+	public int dar_calorias() {
+		return 0;
 	}
 }

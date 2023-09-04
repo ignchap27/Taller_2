@@ -11,6 +11,7 @@ import java.util.Random;
 
 import LoaderHamburguesas.LoaderRestaurante;
 import LoaderHamburguesas.Restaurante;
+import Modelo.Bebidas;
 import Modelo.Combos;
 import Modelo.Ingredientes;
 import Modelo.Pedido;
@@ -23,7 +24,7 @@ public class ConsolaHamburguesas {
 	static Pedido pedido_general;
 	static List<Pedido> lista_total = new ArrayList<>();
 	public static void main(String[] args) {
-		System.out.println("Bienvenido a nuestra tienda de hamburguesas");
+		System.out.println("¡¡Bienvenido a nuestra tienda de hamburguesas!!");
 		logo();
 		boolean continuar = true;
 		while(continuar)
@@ -39,7 +40,11 @@ public class ConsolaHamburguesas {
 				else if(seleccion == 2)
 					iniciarPedido();
 				else if(seleccion == 3)
-					agregarElemento();
+					if (pedido_general == null)
+						System.out.println("\nDebes primero iniciar un pedido antes de agregar elementos :)\n");
+					else {
+						agregarElemento();
+					}
 				else if(seleccion == 4)
 					cerrarPedido();
 				else if(seleccion == 5)
@@ -64,7 +69,7 @@ public class ConsolaHamburguesas {
 
 	private static void cargarArchivos() {
 		try {
-			restaurante = LoaderRestaurante.cargar_archivos("./data/menu.txt","./data/bebidas", "./data/combos.txt", "./data/ingredientes.txt");
+			restaurante = LoaderRestaurante.cargar_archivos("./data/menu.txt","./data/bebidas.txt", "./data/combos.txt", "./data/ingredientes.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,10 +95,26 @@ public class ConsolaHamburguesas {
 
 	public static void buscarPedido() {
 		int total = 0;
+		int calorias = 0;
 		int id = Integer.parseInt(input("Por favor ingrese el id del pedido que busca"));
 		Pedido pedido_buscado = restaurante.look_for_pedido(lista_total, id);
 		if (pedido_buscado == null) {
+			if (id == pedido_general.dar_id()) {
+				int total_pedido_actual = 0;
+				int calorias_actual = 0;
+				System.out.println("Por ahora este es tu pedido con id " + pedido_general.dar_id());
+				for(Pedido elemento : pedido_general.dar_lista()) {
+					System.out.println(elemento.dar_nombre() + " - " + elemento.dar_precio() + "$");
+					total_pedido_actual += elemento.dar_precio();
+					calorias_actual += elemento.dar_calorias();
+				}
+				System.out.println("-----------------------------");
+				System.out.println("\nEl precio parcial de tu pedido es de " + total_pedido_actual + "$");
+				System.out.println("Con una cantidad parcial de " + calorias_actual + " calorias\n");
+			}
+			else {
 			System.out.println("Este pedido no fue encontrado :(");
+			}
 		}
 		else {
 		System.out.println("\nEl pedido buscado con #id " + pedido_buscado.dar_id() + " a nombre de " 
@@ -101,25 +122,35 @@ public class ConsolaHamburguesas {
 		for(Pedido elemento : pedido_buscado.dar_lista()) {
 			System.out.println(elemento.dar_nombre() + " - " + elemento.dar_precio() + "$");
 			total += elemento.dar_precio();
+			calorias += elemento.dar_calorias();
 		}
-		System.out.println("------------------------");
-		System.out.println("\nEl precio total de este pedido es de " + total + "$\n");
+		System.out.println("-----------------------------");
+		System.out.println("\nEl precio total de este pedido es de " + total + "$");
+		System.out.println("Con un total de " + calorias + " calorias\n");
 		}
 	}
 
 	public static void cerrarPedido() {
 		int total = 0;
-		lista_total.add(pedido_general);
+		int calorias = 0;
 		System.out.println("\nEste es tu pedido con #id " + pedido_general.dar_id() + " a nombre de " 
 		+ pedido_general.dar_nombre_cliente() + " para la dirección " + pedido_general.dar_direccion_cliente() + "\n");
 		for(Pedido elemento : pedido_general.dar_lista()) {
 			System.out.println(elemento.dar_nombre() + " - " + elemento.dar_precio() + "$");
 			total += elemento.dar_precio();
+			calorias += elemento.dar_calorias();
 		}
 		System.out.println("------------------------");
-		System.out.println("\nEl precio total de tu pedido es de " + total + "$\n");		
+		System.out.println("\nEl precio total de tu pedido es de " + total + "$");
+		System.out.println("Con un total de " + calorias + " calorias\n");
+		Pedido pedido_igual = restaurante.equals(lista_total, pedido_general);
+		if (pedido_igual != null) {
+			System.out.println("\n¡Hemos encontrado que " + pedido_igual.dar_nombre_cliente() + " ha realizado el mismo pedido!");
+			}
+		lista_total.add(pedido_general);
+			
 	}
-
+	
 	public static void agregarElemento() {
 		System.out.println("\n¿Que deseas agregar?");
 		mostrar_opciones_pedido();
@@ -128,8 +159,10 @@ public class ConsolaHamburguesas {
 		if(seleccion == 1)
 			mostrarPlatos();
 		else if(seleccion == 2)
-			mostrarCombos();
+			mostrasBebidas();
 		else if(seleccion == 3)
+			mostrarCombos();
+		else if(seleccion == 4)
 			mostrarIngredientes();
 		else
 		{
@@ -186,6 +219,22 @@ public class ConsolaHamburguesas {
 		pedido_general.agregar_combo(combo);
 		System.out.println("\nCombo agregado correctamente!\n");
 	}
+	
+	public static void mostrasBebidas() {
+		List<Bebidas> bebidas = restaurante.darBebidas();
+		System.out.println("Estas son nuestas bebidas: \n");
+		int seleccion = 1;
+		for (Bebidas bebida : bebidas) {
+			System.out.print(seleccion + ". " + bebida.dar_nombre() + " - ");
+			System.out.println(bebida.dar_precio() + "$");
+			seleccion  ++;
+		}
+		Bebidas bebida_seleccion;
+		int opcion_agregar = Integer.parseInt(input("\nPor favor seleccione que opción desea agregar a su pedido")) - 1;
+		bebida_seleccion = bebidas.get(opcion_agregar);
+		pedido_general.agregar_bebida(bebida_seleccion);
+		System.out.println("\nBebida agregada correctamente!\n");
+	}
 
 	public static void mostrarPlatos() {
 		List<Platos> menu = restaurante.darPlatos();
@@ -218,12 +267,18 @@ public class ConsolaHamburguesas {
 		List<Platos> menu = restaurante.darPlatos();
 		List<Combos> combos = restaurante.darCombos();
 		List<Ingredientes> ingredientes = restaurante.daringredientes();
+		List<Bebidas> bebidas = restaurante.darBebidas();
 		
 		System.out.println("Este es nuestro menu\n");
 		System.out.println("Estos son nuestros platos:");
 		for (Platos plato : menu) {
 			System.out.print(plato.dar_nombre() + " - ");
 			System.out.println(plato.dar_precio() + "$");
+		}
+		System.out.println("\nEstas son nuestras bebidas:");
+		for (Bebidas bebida : bebidas) {
+			System.out.print(bebida.dar_nombre() + " - ");
+			System.out.println(bebida.dar_precio() + "$");
 		}
 		System.out.println("\nEstos son nuestros combos:");
 		for(Combos combo : combos) {
@@ -249,8 +304,9 @@ public class ConsolaHamburguesas {
 	
 	public static void mostrar_opciones_pedido() {
 		System.out.println("1. Agregar un plato");
-		System.out.println("2. Agregar un combo");
-		System.out.println("3. Agregar o eliminar una adición\n");
+		System.out.println("2. Agregar una bebida");
+		System.out.println("3. Agregar un combo");
+		System.out.println("4. Agregar o eliminar una adición\n");
 	}
 	
 	public static String input(String mensaje)

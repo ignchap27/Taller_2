@@ -106,4 +106,16 @@ public class Restaurante {
 		}
 		return null;
 	}
+	public Pedido equals(List<Pedido> todos_los_pedidos, Pedido pedido_actual) {
+		Pedido pedido_retorno = null;
+		for (Pedido pedido : todos_los_pedidos) {
+			List<Pedido> lista_elemento_pedido = pedido.dar_lista();
+			List<Pedido> lista_pedido_actual = pedido.dar_lista();
+			
+			if(lista_elemento_pedido.containsAll(lista_pedido_actual) && lista_pedido_actual.containsAll(lista_elemento_pedido)) {
+				pedido_retorno = pedido;
+			}
+		}
+		return pedido_retorno;
+	}
 }

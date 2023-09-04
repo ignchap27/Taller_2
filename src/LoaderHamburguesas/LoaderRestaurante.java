@@ -29,23 +29,24 @@ public class LoaderRestaurante {
 			String[] partes_menu = linea_menu.split(";");
 			String nombre_plato = partes_menu[0];
 			int precio = Integer.parseInt(partes_menu[1]);
-			Platos plato = new Platos(nombre_plato, precio);
+			int calorias = Integer.parseInt(partes_menu[2]);
+			Platos plato = new Platos(nombre_plato, precio, calorias);
 			platos.add(plato);
 			linea_menu = br_menu.readLine();
 			
 		}
 		
 		BufferedReader br_bebidas = new BufferedReader(new FileReader(archivo_bebidas));
-		String linea_bebidas = br_menu.readLine();
+		String linea_bebidas = br_bebidas.readLine();
 		while(linea_bebidas != null)
 		{
-			String[] partes_bebidas = linea_menu.split(";");
+			String[] partes_bebidas = linea_bebidas.split(";");
 			String nombre_bebida = partes_bebidas[0];
 			int precio = Integer.parseInt(partes_bebidas[1]);
-			Bebidas bebida = new Bebidas(nombre_bebida, precio);
+			int calorias = Integer.parseInt(partes_bebidas[2]);
+			Bebidas bebida = new Bebidas(nombre_bebida, precio, calorias);
 			bebidas.add(bebida);
-			linea_menu = br_menu.readLine();
-			
+			linea_bebidas = br_bebidas.readLine();
 		}
 		
 		BufferedReader br_combos = new BufferedReader(new FileReader(archivo_combos));
@@ -70,7 +71,8 @@ public class LoaderRestaurante {
 			String[] partes_ing = linea_ing.split(";");
 			String nombre_ing = partes_ing[0];
 			int precio = Integer.parseInt(partes_ing[1]);
-			Ingredientes ingrediente = new Ingredientes(nombre_ing, precio);
+			int calorias = Integer.parseInt(partes_ing[2]);
+			Ingredientes ingrediente = new Ingredientes(nombre_ing, precio, calorias);
 			ingredientes.add(ingrediente);
 			linea_ing = br_ing.readLine();
 		}

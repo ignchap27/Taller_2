@@ -7,6 +7,7 @@ public class Combos extends Pedido {
 	Platos papas;
 	Bebidas gaseosa;
 	int precio;
+	int calorias;
 	
 	public Combos(String nombre, float descuento, Platos hamburguesa, Platos papas, Bebidas gaseosa ){
 		super(null, 0, null, null);
@@ -16,6 +17,7 @@ public class Combos extends Pedido {
 		this.papas = papas;
 		this.gaseosa = gaseosa;
 		this.precio = (int) ((int)((hamburguesa.precio + papas.precio + gaseosa.precio) * (1 - descuento)));
+		this.calorias = (hamburguesa.calorias + papas.calorias + gaseosa.calorias);
 	}
 	public String dar_nombre() {
 		return nombre;
@@ -34,6 +36,9 @@ public class Combos extends Pedido {
 	}
 	public int dar_precio() {
 		return precio;
+	}
+	public int dar_calorias() {
+		return calorias;
 	}
 	
 }
